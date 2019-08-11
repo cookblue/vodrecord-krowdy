@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <div>
+    <label for="recorder">Carga tu video</label>
+    <input type="file" accept="video/*" capture="camera" id="recorder" name="recorder" style="display: none;">
+  </div>
+  <video id="player" playsinline muted></video>
+  <a id="download">Download </a>
+  <button id="stop">Stop </button>
+  
+  <video id="vid2" controls></video>
+
+  <script>
+    var recorder = document.getElementById('recorder');
+    var player = document.getElementById('player');
+
+    recorder.addEventListener('change', function(e) {
+      var file = e.target.files[0];
+    // Do something with the video file.
+    player.src = URL.createObjectURL(file);
+  });
+/*
+  var handleSuccess = function(stream) {
+    player.srcObject = stream;
+  };
+  */
+  let shouldStop = false;
+  let stopped = false;
+  const downloadLink = document.getElementById('download');
+  const stopButton = document.getElementById('stop');
+
+
+  function handleDataAvailable(event) {
+    console.log(event)
+  } 
+
+  var handleSuccess = function(stream) {
+    window.stream = stream;
+    
+    const options = {mimeType: 'video/webm'};
+    let recordedChunks = [];
+    let mediaRecorder = new MediaRecorder(stream);
+    
+
+    if ('srcObject' in player) {
+      player.srcObject = stream;
+    } else {
+      player.src = window.URL.createObjectURL(mediaStreamObj);
+    }
+
+    player.onloadedmetadata = function(ev) {
+      player.play();
+    };
+
+    player.srcObject = stream;
+    
+    mediaRecorder.ondataavailable = function(ev) {
+      console.log('Capture', ev.data);
+      recordedChunks.push(ev.data);
+    };
+
+    mediaRecorder.start();
+
+    stopButton.addEventListener('click', function() {
+      mediaRecorder.stop();
+    })
+
+    const vidSave = document.getElementById('vid2');
+
+    mediaRecorder.onstop = (ev) => {
+      let blob = new Blob(recordedChunks, { 'type' : 'video/webm;' });
+      recordedChunks = [];
+      let videoURL = window.URL.createObjectURL(blob);
+      vidSave.src = videoURL;
+
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = videoURL;
+      a.download = 'test.webm';
+      document.body.appendChild(a);
+      a.click();
+
+      setTimeout(() => {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(videoURL);
+      }, 100);
+    }
+    
+  };
+
+  async function init() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true, // { echoCancellation: { exact: false } }, 
+      video: true 
+    });
+      handleSuccess(stream);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  init()
+
+</script>
+
+
+</body>
+</html>
