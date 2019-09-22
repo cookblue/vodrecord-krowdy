@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="controlerRecorder.js"></script>
+
+</head>
+
+<body>
+    <video id="player" width="600" playsinline muted></video>
+    <button onclick="vodObject.PrintStream()">PRINT STREAM</button>
+    <button onclick="vodObject.StartVideo()">Start</button>
+    <button onclick="vodObject.PauseVideo()">Pause</button>
+    <button onclick="vodObject.ResumeVideo()">Resume</button>
+    <button onclick="vodObject.DownloadVideo()">Download</button>
+    <button onclick="vodObject.StopVideo()">Stop</button>
+    <button onclick="vodObject.ResetVideo()">Reset</button>
+    <script>
+        const player = document.getElementById('player');
+        console.log(player);
+        const vodObject = new VodRecorderController(player);
+        console.log('INIT OBJECT');
+    </script>
+</body>
+</html>

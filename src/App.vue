@@ -134,5 +134,10 @@ export default {
   margin-top: 60px;
   
 }
+#footer {
+  position: fixed;
+  bottom: 0;
+  width:100%;
+}
 
 </style>

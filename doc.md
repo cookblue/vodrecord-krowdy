@@ -1,5 +1,10 @@
 Documentation:
 1. 	Frontend(vodrecord-krowdy): 
+	**Run**
+	- Open you folder in terminal
+	- npm install
+	- npm run serve
+
 	**../public/index.html**
 		id app
 
